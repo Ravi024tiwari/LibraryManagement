@@ -9,11 +9,11 @@ import { authRouter } from "./Routes/authRoute.js";
 import { studentRouter } from "./Routes/studentRoute.js";
 import { issueRouter } from "./Routes/issueRoute.js";
 import adminDashboardRouter from "./Routes/dashboardRoute.js";
-
-export const app =express();
-
 dotenv.config()
+const app =express();
 
+
+connectDb()
 app.use(cors({
     origin: "http://localhost:5173", 
     credentials: true
@@ -24,9 +24,13 @@ app.use(cookieParser())
 app.use(morgan("dev")) //here its get all the request to the backend
 
 
-app.listen(process.env.PORT,()=>{
-    connectDb();//here we call that connection of database
-    console.log(`Server is listing at the porrt:${process.env.PORT}`)
+
+export default app;
+
+app.get("/", (req, res) => {
+    res.status(200).json({
+        msg: "Server is live!"
+    })
 })
 
 app.use("/api/v1/auth",authRouter)
